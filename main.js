@@ -6,7 +6,13 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 
 function createWindow () {
-  mainWindow = new BrowserWindow({fullscreen: true})
+  mainWindow = new BrowserWindow({
+    fullscreen: true,
+    toolbar: false,
+  })
+
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.setAutoHideMenuBar(true);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
