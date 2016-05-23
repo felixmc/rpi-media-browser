@@ -22,10 +22,11 @@ module.exports = {
         'media-browser',
       ],
     }),
-    new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
+//    new webpack.IgnorePlugin(new RegExp("^(fs|ipc)$")),
   ],
 
-  devtool: '#inline-source-map',
+  debug: true,
+  devtool: 'eval-source-map',
 
   resolve: {
     root: [
@@ -47,7 +48,7 @@ module.exports = {
 
     loaders: [
       {test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/},
-      {test: /\.scss$/, loader: 'style!css!postcss!sass', exclude: /node_modules/},
+      {test: /\.scss$/, loader: 'style!css!sass', exclude: /node_modules/},
       {test: /\.woff2?$/, loader: 'file', query: {name: 'fonts/[hash].[ext]'}},
       {test: /\.ttf$/, loader: 'file', query: {name: 'fonts/[hash].[ext]'}},
       {test: /\.eot$/, loader: 'file', query: {name: 'fonts/[hash].[ext]'}},

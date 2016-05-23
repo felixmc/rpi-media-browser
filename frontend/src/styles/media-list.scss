@@ -1,0 +1,7 @@
+.media-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: calc(100% - 100px);
+  margin: 50px auto 0;
+}
