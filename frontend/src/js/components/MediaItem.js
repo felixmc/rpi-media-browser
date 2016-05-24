@@ -9,7 +9,14 @@ export default class MediaItem extends React.Component {
       actions: object.isRequired,
       item: object.isRequired,
       handleFocus: func.isRequired,
+      handlePlay: func.isRequired,
       isSelected: bool,
+    }
+  }
+
+  handleKeyDown (event) {
+    if (event.which === 13) {
+      this.props.handlePlay()
     }
   }
 
@@ -23,6 +30,7 @@ export default class MediaItem extends React.Component {
           tabIndex='0'
           ref='cover'
           onFocus={this.props.handleFocus}
+          onKeyDown={this.handleKeyDown.bind(this)}
           style={{
             backgroundImage: `url(${item.coverImage})`,
           }}

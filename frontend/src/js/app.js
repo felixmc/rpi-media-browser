@@ -13,7 +13,7 @@ export default class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <AppContainer playMedia={this.props.playMedia} />
       </Provider>
     )
   }

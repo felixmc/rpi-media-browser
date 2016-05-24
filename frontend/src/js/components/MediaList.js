@@ -1,5 +1,5 @@
 import React from 'react'
-const { object } = React.PropTypes
+const { object, func } = React.PropTypes
 import Mousetral from 'mousetrap'
 
 import MediaItem from './MediaItem'
@@ -11,6 +11,7 @@ export default class MediaList extends React.Component {
       items: object.isRequired,
       actions: object.isRequired,
       filter: object.isRequired,
+      handlePlay: func.isRequired,
     }
   }
 
@@ -64,6 +65,7 @@ export default class MediaList extends React.Component {
           ref={`item-${i}`}
           actions={this.props.actions}
           item={item}
+          handlePlay={() => this.props.handlePlay(item)}
           handleFocus={() => this.setState({ focusIndex: i })}
         />
       )

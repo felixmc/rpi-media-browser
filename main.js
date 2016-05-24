@@ -1,4 +1,5 @@
 const electron = require('electron')
+require('electron-debug')({ showDevTools: true })
 
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
@@ -17,8 +18,6 @@ function createWindow () {
   mainWindow.setAutoHideMenuBar(true);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`)
-
-  // mainWindow.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null

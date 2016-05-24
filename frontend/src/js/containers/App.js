@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-const { object } = React.PropTypes
+const { object, func } = React.PropTypes
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Immutable from 'immutable'
@@ -15,6 +15,7 @@ class App extends Component {
     return {
       state: object.isRequired,
       actions: object.isRequired,
+      playMedia: func.isRequired,
     }
   }
 
@@ -50,6 +51,7 @@ class App extends Component {
           ref='mediaList'
           items={state.get('media-items')}
           filter={state.get('items-filter')}
+          handlePlay={this.props.playMedia}
           actions={actions}
         />
       </div>

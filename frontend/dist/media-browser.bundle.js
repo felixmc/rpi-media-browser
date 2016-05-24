@@ -83,9 +83,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var exec = window.require('child_process').exec;
+	
 	var container = document.getElementById('app');
 	
-	_reactDom2.default.render(_react2.default.createElement(_app2.default, null), container);
+	var commands = {
+	  browserWorkspace: 'i3-msg workspace number 1',
+	  playerWorkspace: 'i3-msg workspace number 2',
+	  playMedia: 'omxplayer'
+	};
+	
+	function playMedia(item) {
+	  console.log('playing media:', item);
+	  exec(commands.playerWorkspace);
+	  //  exec(`${commands.playerWorkspace} /home/pi/videos/sample.mp4`)
+	}
+	
+	_reactDom2.default.render(_react2.default.createElement(_app2.default, { playMedia: playMedia }), container);
 
 /***/ },
 /* 2 */
@@ -20921,7 +20935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _react2.default.createElement(
 	        _reactRedux.Provider,
 	        { store: store },
-	        _react2.default.createElement(_App2.default, null)
+	        _react2.default.createElement(_App2.default, { playMedia: this.props.playMedia })
 	      );
 	    }
 	  }]);
@@ -29358,7 +29372,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var object = _react2.default.PropTypes.object;
+	var _React$PropTypes = _react2.default.PropTypes;
+	var object = _React$PropTypes.object;
+	var func = _React$PropTypes.func;
 	
 	var App = function (_Component) {
 	  _inherits(App, _Component);
@@ -29417,6 +29433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ref: 'mediaList',
 	          items: state.get('media-items'),
 	          filter: state.get('items-filter'),
+	          handlePlay: this.props.playMedia,
 	          actions: actions
 	        })
 	      );
@@ -29426,7 +29443,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return {
 	        state: object.isRequired,
-	        actions: object.isRequired
+	        actions: object.isRequired,
+	        playMedia: func.isRequired
 	      };
 	    }
 	  }]);
@@ -51958,7 +51976,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var object = _react2.default.PropTypes.object;
+	var _React$PropTypes = _react2.default.PropTypes;
+	var object = _React$PropTypes.object;
+	var func = _React$PropTypes.func;
 	
 	var MediaList = function (_React$Component) {
 	  _inherits(MediaList, _React$Component);
@@ -51969,7 +51989,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return {
 	        items: object.isRequired,
 	        actions: object.isRequired,
-	        filter: object.isRequired
+	        filter: object.isRequired,
+	        handlePlay: func.isRequired
 	      };
 	    }
 	  }]);
@@ -52037,6 +52058,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ref: 'item-' + i,
 	          actions: _this2.props.actions,
 	          item: item,
+	          handlePlay: function handlePlay() {
+	            return _this2.props.handlePlay(item);
+	          },
 	          handleFocus: function handleFocus() {
 	            return _this2.setState({ focusIndex: i });
 	          }
@@ -52118,6 +52142,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  _createClass(MediaItem, [{
+	    key: 'handleKeyDown',
+	    value: function handleKeyDown(event) {
+	      if (event.which === 13) {
+	        this.props.handlePlay();
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var item = this.props.item.toJS();
@@ -52130,6 +52161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          tabIndex: '0',
 	          ref: 'cover',
 	          onFocus: this.props.handleFocus,
+	          onKeyDown: this.handleKeyDown.bind(this),
 	          style: {
 	            backgroundImage: 'url(' + item.coverImage + ')'
 	          }
@@ -52158,6 +52190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        actions: object.isRequired,
 	        item: object.isRequired,
 	        handleFocus: func.isRequired,
+	        handlePlay: func.isRequired,
 	        isSelected: bool
 	      };
 	    }
