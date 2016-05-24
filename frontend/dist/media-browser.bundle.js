@@ -29420,12 +29420,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      _mousetrap2.default.bind(['space'], this.focusItems.bind(this));
 	      _mousetrap2.default.bind(['ctrl+space'], this.focusSearch.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      _mousetrap2.default.unbind(['ctrl+space']);
+	      _mousetrap2.default.unbind(['ctrl+space', 'space']);
 	    }
 	  }, {
 	    key: 'focusSearch',

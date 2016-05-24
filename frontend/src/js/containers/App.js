@@ -28,11 +28,12 @@ class App extends Component {
   }
 
   componentDidMount () {
+    Mousetrap.bind(['space'], this.focusItems.bind(this))
     Mousetrap.bind(['ctrl+space'], this.focusSearch.bind(this))
   }
 
   componentWillUnmount () {
-    Mousetrap.unbind(['ctrl+space'])
+    Mousetrap.unbind(['ctrl+space', 'space'])
   }
 
   focusSearch () {
