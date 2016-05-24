@@ -90,13 +90,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var commands = {
 	  browserWorkspace: 'i3-msg workspace number 1',
 	  playerWorkspace: 'i3-msg workspace number 2',
-	  playMedia: 'omxplayer'
+	  playMedia: 'i3-msg exec omxplayer'
 	};
+	
+	var sampleVideo = '/home/pi/videos/sample.mp4';
 	
 	function playMedia(item) {
 	  console.log('playing media:', item);
-	  exec(commands.playerWorkspace);
-	  //  exec(`${commands.playerWorkspace} /home/pi/videos/sample.mp4`)
+	  exec(commands.playerWorkspace + ' && ' + commands.playMedia + ' ' + sampleVideo);
 	}
 	
 	_reactDom2.default.render(_react2.default.createElement(_app2.default, { playMedia: playMedia }), container);
@@ -29342,6 +29343,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 170);
 	
+	var _classnames = __webpack_require__(/*! classnames */ 407);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	var _immutable = __webpack_require__(/*! immutable */ 204);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
@@ -29379,10 +29384,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 	
+	  _createClass(App, null, [{
+	    key: 'propTypes',
+	    get: function get() {
+	      return {
+	        state: object.isRequired,
+	        actions: object.isRequired,
+	        playMedia: func.isRequired
+	      };
+	    }
+	  }]);
+	
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
+	
+	    _this.state = {
+	      isPlaying: false
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(App, [{
@@ -29402,23 +29423,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.refs.filter.refs.search.focus();
 	    }
 	  }, {
+	    key: 'playMedia',
+	    value: function playMedia(item) {
+	      var _this2 = this;
+	
+	      this.setState({ isPlaying: true });
+	      setTimeout(function () {
+	        _this2.props.playMedia(item);
+	      }, 1000);
+	    }
+	  }, {
 	    key: 'focusItems',
 	    value: function focusItems() {
+	      this.setState({ isPlaying: false });
 	      this.refs.mediaList.focusFirstItem();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var _props = this.props;
 	      var state = _props.state;
 	      var actions = _props.actions;
 	
 	
+	      var overlayClasses = (0, _classnames2.default)({
+	        overlay: true,
+	        'overlay__show': this.state.isPlaying
+	      });
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement('div', { className: overlayClasses }),
 	        _react2.default.createElement(_ItemsFilter2.default, {
 	          ref: 'filter',
 	          categories: _immutable2.default.fromJS([{ value: 'all', label: 'All' }]),
@@ -29426,26 +29464,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return actions.filterItems(filter);
 	          },
 	          handleDone: function handleDone() {
-	            return _this2.focusItems();
+	            return _this3.focusItems();
 	          }
 	        }),
 	        _react2.default.createElement(_MediaList2.default, {
 	          ref: 'mediaList',
 	          items: state.get('media-items'),
 	          filter: state.get('items-filter'),
-	          handlePlay: this.props.playMedia,
+	          handlePlay: this.playMedia.bind(this),
 	          actions: actions
 	        })
 	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    get: function get() {
-	      return {
-	        state: object.isRequired,
-	        actions: object.isRequired,
-	        playMedia: func.isRequired
-	      };
 	    }
 	  }]);
 	
@@ -52334,9 +52363,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px;\n  transition: all .2s ease-in-out; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none;\n  overflow: hidden;\n  margin: 0; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px; }\n\n#app {\n  height: 100%;\n  padding-top: 40px; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px;\n  transition: all .2s ease-in-out; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none;\n  overflow: hidden;\n  margin: 0; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px;\n  z-index: 0; }\n\n#app {\n  height: 100%;\n  padding-top: 40px; }\n\n.overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: -100;\n  background: transparent;\n  transition: all 1s ease-in-out; }\n  .overlay.overlay__show {\n    opacity: 1;\n    z-index: 999;\n    background: black; }\n", ""]);
 	
 	// exports
+
+
+/***/ },
+/* 407 */
+/*!*******************************!*\
+  !*** ./~/classnames/index.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
 
 
 /***/ }

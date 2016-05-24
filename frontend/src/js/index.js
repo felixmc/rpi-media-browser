@@ -9,13 +9,14 @@ const container = document.getElementById('app')
 const commands = {
   browserWorkspace: 'i3-msg workspace number 1',
   playerWorkspace: 'i3-msg workspace number 2',
-  playMedia: 'omxplayer',
+  playMedia: 'i3-msg exec omxplayer',
 }
+
+const sampleVideo = '/home/pi/videos/sample.mp4'
 
 function playMedia (item) {
   console.log('playing media:', item)
-  exec(commands.playerWorkspace)
-  //  exec(`${commands.playerWorkspace} /home/pi/videos/sample.mp4`)
+  exec(`${commands.playerWorkspace} && ${commands.playMedia} ${sampleVideo}`)
 }
 
 ReactDOM.render(<App playMedia={playMedia} />, container)
