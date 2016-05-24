@@ -29328,13 +29328,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 170);
 	
-	var _mousetrap = __webpack_require__(/*! mousetrap */ 225);
-	
-	var _mousetrap2 = _interopRequireDefault(_mousetrap);
-	
 	var _immutable = __webpack_require__(/*! immutable */ 204);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
+	
+	var _mousetrap = __webpack_require__(/*! mousetrap */ 225);
+	
+	var _mousetrap2 = _interopRequireDefault(_mousetrap);
 	
 	var _ItemsFilter = __webpack_require__(/*! ../components/ItemsFilter */ 226);
 	
@@ -29372,6 +29372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      _mousetrap2.default.bind(['enter'], this.focusItems.bind(this));
 	      _mousetrap2.default.bind(['ctrl+space'], this.focusSearch.bind(this));
 	    }
 	  }, {
@@ -29385,8 +29386,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.refs.filter.refs.search.focus();
 	    }
 	  }, {
+	    key: 'focusItems',
+	    value: function focusItems() {
+	      this.refs.mediaList.focusFirstItem();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var _props = this.props;
 	      var state = _props.state;
 	      var actions = _props.actions;
@@ -29400,9 +29408,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          categories: _immutable2.default.fromJS([{ value: 'all', label: 'All' }]),
 	          handleFilter: function handleFilter(filter) {
 	            return actions.filterItems(filter);
+	          },
+	          handleDone: function handleDone() {
+	            return _this2.focusItems();
 	          }
 	        }),
 	        _react2.default.createElement(_MediaList2.default, {
+	          ref: 'mediaList',
 	          items: state.get('media-items'),
 	          filter: state.get('items-filter'),
 	          actions: actions
@@ -30503,7 +30515,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return {
 	        categories: object.isRequired,
-	        handleFilter: func.isRequired
+	        handleFilter: func.isRequired,
+	        handleDone: func.isRequired
 	      };
 	    }
 	  }]);
@@ -30536,6 +30549,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 	  }, {
+	    key: 'handleKeyDown',
+	    value: function handleKeyDown(event) {
+	      if (event.which === 13) {
+	        this.props.handleDone();
+	        return false;
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this4 = this;
@@ -30548,7 +30569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          { className: 'items-filter__search' },
 	          _react2.default.createElement('input', { ref: 'search', defaultValue: this.state.search, type: 'text', placeholder: 'Search..', onChange: function onChange(e) {
 	              return _this4.onSearch(e.target.value);
-	            } })
+	            }, onKeyDown: this.handleKeyDown.bind(this) })
 	        ),
 	        _react2.default.createElement(_reactDropdown2.default, {
 	          placeholder: 'Category',
@@ -30556,7 +30577,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          options: this.props.categories.toJS(),
 	          onChange: function onChange(e) {
 	            return _this4.onCategoryFilter(e);
-	          }
+	          },
+	          onKeyDown: this.handleKeyDown.bind(this)
 	        })
 	      );
 	    }
@@ -51580,7 +51602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, ".items-filter {\n  background: rgba(255, 255, 255, 0.6);\n  border-radius: 5px;\n  width: 50%;\n  margin: 40px auto 80px;\n  height: 50px;\n  display: flex;\n  flex-flow: row wrap;\n  background: rgba(193, 246, 255, 0.2);\n  box-shadow: 0 5px 30px 2px rgba(0, 0, 0, 0.4); }\n  .items-filter .items-filter__search {\n    height: 100%;\n    width: calc(100% - 150px);\n    border-top-left-radius: 5px;\n    border-bottom-left-radius: 5px; }\n    .items-filter .items-filter__search input {\n      border: none;\n      width: 100%;\n      height: 100%;\n      padding: 0;\n      background: none;\n      font-size: 18px;\n      text-indent: 15px;\n      color: #eee; }\n  .items-filter .Dropdown-root {\n    width: 150px;\n    height: 100%;\n    border-top-right-radius: 5px;\n    border-bottom-right-radius: 5px;\n    line-height: 50px;\n    font-family: sans-serif;\n    font-size: 15px;\n    background: rgba(255, 255, 255, 0.2);\n    text-indent: 20px;\n    position: relative; }\n    .items-filter .Dropdown-root .Dropdown-option {\n      background: rgba(255, 255, 255, 0.2); }\n    .items-filter .Dropdown-root:after {\n      width: 0;\n      height: 0;\n      border-left: 7px solid transparent;\n      border-right: 7px solid transparent;\n      border-top: 7px solid rgba(0, 0, 0, 0.4);\n      content: '';\n      display: block;\n      position: absolute;\n      right: 20px;\n      top: 0;\n      bottom: 0;\n      margin: auto 0; }\n", ""]);
+	exports.push([module.id, ".items-filter {\n  background: rgba(255, 255, 255, 0.6);\n  border-radius: 5px;\n  width: 50%;\n  margin: 0 auto;\n  height: 50px;\n  display: flex;\n  flex-flow: row wrap;\n  background: rgba(193, 246, 255, 0.2);\n  box-shadow: 0 5px 30px 2px rgba(0, 0, 0, 0.4); }\n  .items-filter .items-filter__search {\n    height: 100%;\n    width: calc(100% - 150px);\n    border-top-left-radius: 5px;\n    border-bottom-left-radius: 5px; }\n    .items-filter .items-filter__search input {\n      border: none;\n      width: 100%;\n      height: 100%;\n      padding: 0;\n      background: none;\n      font-size: 18px;\n      text-indent: 15px;\n      color: #eee; }\n  .items-filter .Dropdown-root {\n    width: 150px;\n    height: 100%;\n    border-top-right-radius: 5px;\n    border-bottom-right-radius: 5px;\n    line-height: 50px;\n    font-family: sans-serif;\n    font-size: 15px;\n    background: rgba(255, 255, 255, 0.2);\n    text-indent: 20px;\n    position: relative; }\n    .items-filter .Dropdown-root .Dropdown-option {\n      background: rgba(255, 255, 255, 0.2); }\n    .items-filter .Dropdown-root:after {\n      width: 0;\n      height: 0;\n      border-left: 7px solid transparent;\n      border-right: 7px solid transparent;\n      border-top: 7px solid rgba(0, 0, 0, 0.4);\n      content: '';\n      display: block;\n      position: absolute;\n      right: 20px;\n      top: 0;\n      bottom: 0;\n      margin: auto 0; }\n", ""]);
 	
 	// exports
 
@@ -51918,6 +51940,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _mousetrap = __webpack_require__(/*! mousetrap */ 225);
+	
+	var _mousetrap2 = _interopRequireDefault(_mousetrap);
+	
 	var _MediaItem = __webpack_require__(/*! ./MediaItem */ 400);
 	
 	var _MediaItem2 = _interopRequireDefault(_MediaItem);
@@ -51937,13 +51963,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MediaList = function (_React$Component) {
 	  _inherits(MediaList, _React$Component);
 	
+	  _createClass(MediaList, null, [{
+	    key: 'propTypes',
+	    get: function get() {
+	      return {
+	        items: object.isRequired,
+	        actions: object.isRequired,
+	        filter: object.isRequired
+	      };
+	    }
+	  }]);
+	
 	  function MediaList() {
 	    _classCallCheck(this, MediaList);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MediaList).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaList).call(this));
+	
+	    _this.state = {
+	      focusIndex: -1
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(MediaList, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      Mousetrap.bind(['left'], this.focusPrevItem.bind(this));
+	      Mousetrap.bind(['right'], this.focusNextItem.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      Mousetrap.unbind(['left', 'right']);
+	    }
+	  }, {
+	    key: 'focusFirstItem',
+	    value: function focusFirstItem() {
+	      this.refs['item-0'].refs.cover.focus();
+	    }
+	  }, {
+	    key: 'focusNextItem',
+	    value: function focusNextItem() {
+	      var items = this.filterItems();
+	      var index = (this.state.focusIndex + 1) % items.size;
+	      this.refs['item-' + index].refs.cover.focus();
+	    }
+	  }, {
+	    key: 'focusPrevItem',
+	    value: function focusPrevItem() {
+	      var items = this.filterItems();
+	      var index = (this.state.focusIndex + items.size - 1) % items.size;
+	      this.refs['item-' + index].refs.cover.focus();
+	    }
+	  }, {
 	    key: 'filterItems',
 	    value: function filterItems() {
 	      var filter = this.props.filter.toJS();
@@ -51956,18 +52028,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'renderItems',
-	    value: function renderItems() {
+	    value: function renderItems(items) {
 	      var _this2 = this;
-	
-	      var items = this.filterItems();
 	
 	      return items.map(function (item, i) {
 	        return _react2.default.createElement(_MediaItem2.default, {
-	          key: i,
+	          key: item.hashCode() + i,
+	          ref: 'item-' + i,
 	          actions: _this2.props.actions,
-	          item: item
+	          item: item,
+	          handleFocus: function handleFocus() {
+	            return _this2.setState({ focusIndex: i });
+	          }
 	        });
 	      });
+	    }
+	  }, {
+	    key: 'renderContent',
+	    value: function renderContent() {
+	      var items = this.filterItems();
+	
+	      if (items.size) {
+	        return this.renderItems(items);
+	      } else {
+	        return _react2.default.createElement(
+	          'p',
+	          null,
+	          'No items found'
+	        );
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -51975,17 +52064,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'media-list' },
-	        this.renderItems()
+	        this.renderContent()
 	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    get: function get() {
-	      return {
-	        items: object.isRequired,
-	        actions: object.isRequired,
-	        filter: object.isRequired
-	      };
 	    }
 	  }]);
 	
@@ -52026,6 +52106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _React$PropTypes = _react2.default.PropTypes;
 	var object = _React$PropTypes.object;
 	var bool = _React$PropTypes.bool;
+	var func = _React$PropTypes.func;
 	
 	var MediaItem = function (_React$Component) {
 	  _inherits(MediaItem, _React$Component);
@@ -52047,6 +52128,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2.default.createElement('div', {
 	          className: 'media-item__cover',
 	          tabIndex: '0',
+	          ref: 'cover',
+	          onFocus: this.props.handleFocus,
 	          style: {
 	            backgroundImage: 'url(' + item.coverImage + ')'
 	          }
@@ -52074,6 +52157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return {
 	        actions: object.isRequired,
 	        item: object.isRequired,
+	        handleFocus: func.isRequired,
 	        isSelected: bool
 	      };
 	    }
@@ -52125,7 +52209,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, ".media-item {\n  width: 180px;\n  height: 270px;\n  padding: 0 40px 50px;\n  margin-bottom: 40px;\n  text-indent: 3px;\n  position: relative; }\n  .media-item .media-item__cover {\n    width: 180px;\n    height: 240px;\n    background-size: cover;\n    box-shadow: 0 5px 50px 5px rgba(0, 0, 0, 0.8); }\n  .media-item .media-item__title {\n    text-transform: capitalize;\n    margin: 15px 0 0; }\n  .media-item .media-item__categories {\n    text-transform: capitalize;\n    opacity: .5;\n    margin: 0;\n    font-size: .8em; }\n  .media-item .media-item__rating {\n    background: linear-gradient(#FFDB00, #FF8100);\n    border-radius: 50%;\n    padding: 7px;\n    width: 30px;\n    height: 30px;\n    position: absolute;\n    right: 20px;\n    top: 170px;\n    font-weight: bold;\n    font-family: sans-serif;\n    line-height: 30px;\n    text-align: center;\n    font-size: .8em;\n    box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.8);\n    text-shadow: 0 -1px 0 rgba(150, 0, 0, 0.5); }\n", ""]);
+	exports.push([module.id, ".media-item {\n  width: 180px;\n  height: 270px;\n  padding: 0 40px 50px;\n  margin-bottom: 40px;\n  text-indent: 3px;\n  position: relative; }\n  .media-item .media-item__cover {\n    width: 180px;\n    height: 240px;\n    background-size: cover;\n    box-shadow: 0 5px 50px 5px rgba(0, 0, 0, 0.8); }\n    .media-item .media-item__cover:focus {\n      transform: scale(1.1); }\n      .media-item .media-item__cover:focus:after {\n        content: '';\n        display: block;\n        width: 100%;\n        height: 100%;\n        background: linear-gradient(rgba(255, 255, 255, 0.23), transparent 50%); }\n  .media-item .media-item__title {\n    text-transform: capitalize;\n    margin: 15px 0 0; }\n  .media-item .media-item__categories {\n    text-transform: capitalize;\n    opacity: .5;\n    margin: 0;\n    font-size: .8em; }\n  .media-item .media-item__rating {\n    background: linear-gradient(#FFDB00, #FF8100);\n    border-radius: 50%;\n    padding: 7px;\n    width: 30px;\n    height: 30px;\n    position: absolute;\n    right: 20px;\n    top: 170px;\n    font-weight: bold;\n    font-family: sans-serif;\n    line-height: 30px;\n    text-align: center;\n    font-size: .8em;\n    box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.8);\n    text-shadow: 0 -1px 0 rgba(150, 0, 0, 0.5); }\n", ""]);
 	
 	// exports
 
@@ -52171,7 +52255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, ".media-list {\n  display: flex;\n  flex-flow: row wrap;\n  justify-content: center;\n  width: calc(100% - 100px);\n  margin: 50px auto 0; }\n", ""]);
+	exports.push([module.id, ".media-list {\n  display: flex;\n  flex-flow: row wrap;\n  justify-content: center;\n  width: calc(100% - 100px);\n  margin: 40px auto 0;\n  padding-top: 40px;\n  max-height: calc(100% - 170px); }\n", ""]);
 	
 	// exports
 
@@ -52217,7 +52301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px;\n  transition: all .2s ease-in-out; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none;\n  overflow: hidden;\n  margin: 0; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px; }\n\n#app {\n  height: 100%;\n  padding-top: 40px; }\n", ""]);
 	
 	// exports
 

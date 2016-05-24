@@ -1,5 +1,5 @@
 import React from 'react'
-const { object, bool } = React.PropTypes
+const { object, bool, func } = React.PropTypes
 
 import 'styles/media-item.scss'
 
@@ -8,6 +8,7 @@ export default class MediaItem extends React.Component {
     return {
       actions: object.isRequired,
       item: object.isRequired,
+      handleFocus: func.isRequired,
       isSelected: bool,
     }
   }
@@ -20,6 +21,8 @@ export default class MediaItem extends React.Component {
         <div
           className='media-item__cover'
           tabIndex='0'
+          ref='cover'
+          onFocus={this.props.handleFocus}
           style={{
             backgroundImage: `url(${item.coverImage})`,
           }}

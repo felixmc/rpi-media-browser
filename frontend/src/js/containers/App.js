@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 const { object } = React.PropTypes
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Mousetrap from 'mousetrap'
 import Immutable from 'immutable'
+import Mousetrap from 'mousetrap'
 
 import ItemsFilter from '../components/ItemsFilter'
 import MediaList from '../components/MediaList'
@@ -19,6 +19,7 @@ class App extends Component {
   }
 
   componentDidMount () {
+    Mousetrap.bind(['enter'], this.focusItems.bind(this))
     Mousetrap.bind(['ctrl+space'], this.focusSearch.bind(this))
   }
 
@@ -30,6 +31,10 @@ class App extends Component {
     this.refs.filter.refs.search.focus()
   }
 
+  focusItems () {
+    this.refs.mediaList.focusFirstItem()
+  }
+
   render () {
     const { state, actions } = this.props
 
@@ -39,8 +44,10 @@ class App extends Component {
           ref='filter'
           categories={Immutable.fromJS([{value: 'all', label: 'All'}])}
           handleFilter={(filter) => actions.filterItems(filter)}
+          handleDone={() => this.focusItems()}
         />
         <MediaList
+          ref='mediaList'
           items={state.get('media-items')}
           filter={state.get('items-filter')}
           actions={actions}

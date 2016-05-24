@@ -13,12 +13,15 @@ $bg-color-dark:  #161D24;
 * { 
   outline-color: #D4FF00;
   outline-width: 8px;
+  transition: all .2s ease-in-out;
 }
 
 html,
 body {
   height: 100%;
   cursor: none;
+  overflow: hidden;
+  margin: 0;
 }
 
 body {
@@ -28,6 +31,9 @@ body {
   font-size: 20px;
 }
 
-
+#app {
+  height: 100%;
+  padding-top: 40px;
+}
 
 

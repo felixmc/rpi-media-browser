@@ -18,7 +18,7 @@ function createWindow () {
 
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
-  mainWindow.openDevTools()
+  // mainWindow.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
