@@ -87,17 +87,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var container = document.getElementById('app');
 	
-	var commands = {
-	  browserWorkspace: 'i3-msg workspace number 1',
-	  playerWorkspace: 'i3-msg workspace number 2',
-	  playMedia: 'i3-msg exec omxplayer'
-	};
+	function i3msg(msg) {
+	  return 'i3-msg ' + msg;
+	}
+	
+	function i3ws(num) {
+	  return i3msg('workspace number ' + num);
+	}
+	
+	function i3exec(command) {
+	  return i3msg('exec "' + command + '"');
+	}
+	
+	function i3playVideo(path) {
+	  var command = 'omxplayer ' + path + ' && ' + i3ws(1);
+	  return i3ws(2) + ' && ' + i3exec(command);
+	}
 	
 	var sampleVideo = '/home/pi/videos/sample.mp4';
 	
 	function playMedia(item) {
 	  console.log('playing media:', item);
-	  exec(commands.playerWorkspace + ' && ' + commands.playMedia + ' ' + sampleVideo);
+	  exec(i3playVideo(sampleVideo));
 	}
 	
 	_reactDom2.default.render(_react2.default.createElement(_app2.default, { playMedia: playMedia }), container);
@@ -29409,13 +29420,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      _mousetrap2.default.bind(['enter'], this.focusItems.bind(this));
 	      _mousetrap2.default.bind(['ctrl+space'], this.focusSearch.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      _mousetrap2.default.unbind(['ctrl+space', 'backspace']);
+	      _mousetrap2.default.unbind(['ctrl+space']);
 	    }
 	  }, {
 	    key: 'focusSearch',

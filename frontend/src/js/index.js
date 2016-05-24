@@ -6,17 +6,28 @@ const exec = window.require('child_process').exec
 
 const container = document.getElementById('app')
 
-const commands = {
-  browserWorkspace: 'i3-msg workspace number 1',
-  playerWorkspace: 'i3-msg workspace number 2',
-  playMedia: 'i3-msg exec omxplayer',
+function i3msg (msg) {
+  return `i3-msg ${msg}`
+}
+
+function i3ws (num) {
+  return i3msg(`workspace number ${num}`)
+}
+
+function i3exec (command) {
+  return i3msg(`exec "${command}"`)
+}
+
+function i3playVideo (path) {
+  const command = `omxplayer ${path} && ${i3ws(1)}`
+  return `${i3ws(2)} && ${i3exec(command)}`
 }
 
 const sampleVideo = '/home/pi/videos/sample.mp4'
 
 function playMedia (item) {
   console.log('playing media:', item)
-  exec(`${commands.playerWorkspace} && ${commands.playMedia} ${sampleVideo}`)
+  exec(i3playVideo(sampleVideo))
 }
 
 ReactDOM.render(<App playMedia={playMedia} />, container)
