@@ -37,6 +37,15 @@ body {
   padding-top: 40px;
 }
 
+@keyframes pulse {
+  from {
+    background: rgba(0,0,0,.9);
+  }
+  to {
+    background: rgba(0,0,0,.7);
+  }
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -50,6 +59,8 @@ body {
   &.overlay__show {
     opacity: 1;
     z-index: 999;
-    background: black;
+    background: rgba(0,0,0,.9);
+    animation: pulse 3s infinite ease-in-out alternate;
+    animation-delay: 1s;
   }
 }

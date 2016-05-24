@@ -23,7 +23,7 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      isPlaying: false
+      isPlaying: false,
     }
   }
 
@@ -57,7 +57,7 @@ class App extends Component {
 
     const overlayClasses = classNames({
       overlay: true,
-      'overlay__show': this.state.isPlaying
+      'overlay__show': this.state.isPlaying,
     })
 
     return (

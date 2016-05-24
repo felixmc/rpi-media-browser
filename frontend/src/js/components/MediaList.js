@@ -1,6 +1,6 @@
 import React from 'react'
 const { object, func } = React.PropTypes
-import Mousetral from 'mousetrap'
+import Mousetrap from 'mousetrap'
 
 import MediaItem from './MediaItem'
 import 'styles/media-list.scss'
@@ -18,7 +18,7 @@ export default class MediaList extends React.Component {
   constructor () {
     super()
     this.state = {
-      focusIndex: -1
+      focusIndex: -1,
     }
   }
 
