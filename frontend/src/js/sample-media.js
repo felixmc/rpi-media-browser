@@ -57,4 +57,16 @@ const media = Immutable.fromJS([
   },
 ])
 
-export default media
+const categories = media.map(item => {
+  return item.get('categories') || Immutable.List()
+}).reduce((allCats, itemCats) => {
+  itemCats.forEach(cat => {
+    if (!allCats.includes(cat)) {
+      allCats = allCats.push(cat)
+    }
+  })
+
+  return allCats
+})
+
+export default { media, categories }

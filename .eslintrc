@@ -25,6 +25,7 @@
     "no-debugger": [1]
   },
   "globals": {
-    "alert": false
+    "alert": false,
+    "Debug": true
   }
 }

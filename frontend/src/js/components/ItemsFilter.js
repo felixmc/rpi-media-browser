@@ -15,7 +15,9 @@ export default class ItemsFilter extends React.Component {
 
   constructor () {
     super()
-    this.state = { search: '', category: { value: 'all', label: 'All' } }
+    this.state = { search: '', category: 'all' }
+
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   onSearch (query) {
@@ -25,7 +27,7 @@ export default class ItemsFilter extends React.Component {
   }
 
   onCategoryFilter (category) {
-    this.setState({ category }, () => {
+    this.setState({ category: category.value }, () => {
       this.props.handleFilter(this.state)
     })
   }
@@ -38,17 +40,19 @@ export default class ItemsFilter extends React.Component {
   }
 
   render () {
+    const categories = this.props.categories.insert(0, 'all')
+
     return (
       <div className='items-filter'>
         <div className='items-filter__search'>
-          <input ref='search' defaultValue={this.state.search} type='text' placeholder='Search..' onChange={(e) => this.onSearch(e.target.value)} onKeyDown={this.handleKeyDown.bind(this)} />
+          <input ref='search' defaultValue={this.state.search} type='text' placeholder='Search..' onChange={(e) => this.onSearch(e.target.value)} onKeyDown={this.handleKeyDown} />
         </div>
         <Dropdown
           placeholder='Category'
           value={this.state.category}
-          options={this.props.categories.toJS()}
+          options={categories.toJS()}
           onChange={(e) => this.onCategoryFilter(e)}
-          onKeyDown={this.handleKeyDown.bind(this)}
+          onKeyDown={this.handleKeyDown}
         />
       </div>
     )

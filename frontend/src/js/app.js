@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+const { func } = React.PropTypes
 import { Provider } from 'react-redux'
 
 import createStore from './store'
@@ -7,9 +8,13 @@ import AppContainer from './containers/App'
 
 const store = createStore(reducers)
 
-console.log('INIT MEDIA BROWSER APP')
-
 export default class App extends Component {
+  static get propTypes () {
+    return {
+      playMedia: func.isRequired,
+    }
+  }
+
   render () {
     return (
       <Provider store={store}>

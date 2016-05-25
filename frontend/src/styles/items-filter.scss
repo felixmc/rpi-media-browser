@@ -41,9 +41,12 @@ $filter-height: 50px;
     background: rgba(255,255,255,.2);
     text-indent: 20px;
     position: relative;
+    text-transform: capitalize;
 
     .Dropdown-option {
-       background: rgba(255,255,255,.2); 
+      z-index: 1;
+      position: relative;
+      background: #586871;
     }
 
     &:after {

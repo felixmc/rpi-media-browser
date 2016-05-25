@@ -3,7 +3,6 @@ const { object, func } = React.PropTypes
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import Immutable from 'immutable'
 import Mousetrap from 'mousetrap'
 
 import ItemsFilter from '../components/ItemsFilter'
@@ -25,23 +24,23 @@ class App extends Component {
     this.state = {
       isPlaying: false,
     }
+
+    this.playMedia = this.playMedia.bind(this)
+    this.focusItems = this.focusItems.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+  }
+
+  componentWillMount () {
+    this.props.actions.loadMedia()
   }
 
   componentDidMount () {
-    Mousetrap.bind(['ctrl+space'])
+    Mousetrap.bind(['ctrl+space'], this.focusSearch.bind(this))
+    // Mousetrap.bind(['ctrl-i'], this.importMedia.bind(this))
   }
 
   componentWillUnmount () {
-    Mousetrap.unbind(['ctrl+space'])
-  }
-
-  playMedia (item) {
-    if (!this.state.isPlaying) {
-      this.setState({ isPlaying: true })
-      setTimeout(() => {
-        this.props.playMedia(item)
-      }, 1000)
-    }
+    Mousetrap.unbind(['ctrl+space', 'ctrl-i'])
   }
 
   handleKeyDown (e) {
@@ -50,6 +49,15 @@ class App extends Component {
 
       e.preventDefault()
       return false
+    }
+  }
+
+  playMedia (item) {
+    if (!this.state.isPlaying) {
+      this.setState({ isPlaying: true })
+      setTimeout(() => {
+        this.props.playMedia(item)
+      }, 1000)
     }
   }
 
@@ -67,23 +75,23 @@ class App extends Component {
 
     const overlayClasses = classNames({
       overlay: true,
-      'overlay__show': this.state.isPlaying,
+      overlay__show: this.state.isPlaying,
     })
 
     return (
-      <div onKeyDown={this.handleKeyDown.bind(this)}>
+      <div onKeyDown={this.handleKeyDown}>
         <div className={overlayClasses}></div>
         <ItemsFilter
           ref='filter'
-          categories={Immutable.fromJS([{value: 'all', label: 'All'}])}
-          handleFilter={(filter) => actions.filterItems(filter)}
-          handleDone={() => this.focusItems()}
+          categories={state.get('categories')}
+          handleFilter={actions.filterItems}
+          handleDone={this.focusItems}
         />
         <MediaList
           ref='mediaList'
-          items={state.get('media-items')}
-          filter={state.get('items-filter')}
-          handlePlay={this.playMedia.bind(this)}
+          items={state.get('mediaItems')}
+          filter={state.get('itemsFilter')}
+          handlePlay={this.playMedia}
           actions={actions}
         />
       </div>

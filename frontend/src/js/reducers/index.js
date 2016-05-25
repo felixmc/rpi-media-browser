@@ -1,22 +1,42 @@
 import { combineReducers } from 'redux-immutable'
 import { handleActions } from 'redux-actions'
-import Immutable from 'immutable'
+import Immutable, { List } from 'immutable'
 
-import mediaItems from '../sample-media'
+import samples from '../sample-media'
 import actions from '../actions'
+
+const debug = Debug('reducer')
 
 export default combineReducers({
   lastAction: (state, action) => {
-    console.log('ACTION CALLED:', action)
+    debug('ACTION CALLED:', action)
     return action && action.type
   },
 
-  'media-items': handleActions({
+  mediaItems: handleActions({
+    [actions.loadMedia.type]: (state, action) => Immutable.fromJS(action.payload),
+  }, samples.media),
 
-  }, mediaItems),
+  categories: handleActions({
+    [actions.loadMedia.type]: (state, action) => {
+      const categories = Array.prototype.map.call(action.payload, item => {
+        return item.categories || []
+      }).reduce((allCats, itemCats) => {
+        itemCats.forEach(cat => {
+          if (allCats.indexOf(cat) !== -1) {
+            allCats = allCats.push(cat)
+          }
+        })
 
-  'items-filter': handleActions({
+        return allCats
+      })
+
+      return List(categories)
+    },
+  }, samples.categories),
+
+  itemsFilter: handleActions({
     [actions.filterItems.type]: (state, action) => Immutable.fromJS(action.payload),
-    [actions.clearItemsFilter.type]: (state, action) => Immutable.fromJS({ search: '', category: { value: 'all', label: 'All' } }),
-  }, Immutable.fromJS({ search: '', category: { value: 'all', label: 'All' } })),
+    [actions.clearItemsFilter.type]: (state, action) => Immutable.fromJS({ search: '', category: 'all' }),
+  }, Immutable.fromJS({ search: '', category: 'all' })),
 })

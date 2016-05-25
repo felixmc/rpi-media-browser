@@ -20,11 +20,14 @@ export default class MediaList extends React.Component {
     this.state = {
       focusIndex: -1,
     }
+
+    this.focusPrevItem = this.focusPrevItem.bind(this)
+    this.focusNextItem = this.focusNextItem.bind(this)
   }
 
   componentDidMount () {
-    Mousetrap.bind(['left'], this.focusPrevItem.bind(this))
-    Mousetrap.bind(['right'], this.focusNextItem.bind(this))
+    Mousetrap.bind(['left'], this.focusPrevItem)
+    Mousetrap.bind(['right'], this.focusNextItem)
   }
 
   componentWillUnmount () {
@@ -52,7 +55,7 @@ export default class MediaList extends React.Component {
 
     return this.props.items.filter(item => {
       const matchesSearch = !filter.search || item.get('title').toLowerCase().indexOf(filter.search.toLowerCase()) !== -1
-      const matchesCategory = filter.category.value === 'all'
+      const matchesCategory = filter.category === 'all' || item.get('categories').includes(filter.category)
       return matchesSearch && matchesCategory
     })
   }
@@ -63,9 +66,8 @@ export default class MediaList extends React.Component {
         <MediaItem
           key={item.hashCode() + i}
           ref={`item-${i}`}
-          actions={this.props.actions}
           item={item}
-          handlePlay={() => this.props.handlePlay(item)}
+          handlePlay={() => this.props.handlePlay(item.getIn['mediaFiles', 0])}
           handleFocus={() => this.setState({ focusIndex: i })}
         />
       )

@@ -1,0 +1,9 @@
+{
+    "imdb_id": null,
+    "title": "Sample Media",
+    "categories": ["comedy", "drama"],
+    "description": "A sample media file",
+    "rating": 4.2,
+    "coverImage": "cover.png",
+    "mediaFiles": ["sample.mp4"]
+}

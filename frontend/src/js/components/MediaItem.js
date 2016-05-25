@@ -6,12 +6,16 @@ import 'styles/media-item.scss'
 export default class MediaItem extends React.Component {
   static get propTypes () {
     return {
-      actions: object.isRequired,
       item: object.isRequired,
       handleFocus: func.isRequired,
       handlePlay: func.isRequired,
       isSelected: bool,
     }
+  }
+
+  constructor () {
+    super()
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   handleKeyDown (event) {
@@ -30,7 +34,7 @@ export default class MediaItem extends React.Component {
           tabIndex='0'
           ref='cover'
           onFocus={this.props.handleFocus}
-          onKeyDown={this.handleKeyDown.bind(this)}
+          onKeyDown={this.handleKeyDown}
           style={{
             backgroundImage: `url(${item.coverImage})`,
           }}
