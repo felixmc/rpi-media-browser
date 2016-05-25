@@ -100,7 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	function i3playVideo(path) {
-	  var command = 'omxplayer ' + path + ' && ' + i3ws(1);
+	  var command = 'xterm -fullscreen -fg black -bg black -e omxplayer -o hdmi -r ' + path + '; ' + i3ws(1);
 	  return i3ws(2) + ' && ' + i3exec(command);
 	}
 	
@@ -52431,7 +52431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px;\n  transition: all .2s ease-in-out; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none;\n  overflow: hidden;\n  margin: 0; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px;\n  z-index: 0; }\n\n#app {\n  height: 100%;\n  padding-top: 40px; }\n\n@keyframes pulse {\n  from {\n    background: rgba(0, 0, 0, 0.9); }\n  to {\n    background: rgba(0, 0, 0, 0.7); } }\n\n.overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: -100;\n  background: transparent;\n  transition: all 1s ease-in-out; }\n  .overlay.overlay__show {\n    opacity: 1;\n    z-index: 999;\n    background: rgba(0, 0, 0, 0.9);\n    animation: pulse 3s infinite ease-in-out alternate;\n    animation-delay: 1s; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'Open Sans Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Open Sans Cond Light\"), local(\"OpenSans-CondensedLight\"), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format(\"woff2\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }\n\n* {\n  outline-color: #D4FF00;\n  outline-width: 8px;\n  transition: all .2s ease-in-out; }\n\nhtml,\nbody {\n  height: 100%;\n  cursor: none;\n  overflow: hidden;\n  margin: 0; }\n\nbody {\n  background: linear-gradient(45deg, #161D24, #364D5A);\n  color: #eee;\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 20px;\n  z-index: 0; }\n\n#app {\n  height: 100%;\n  padding-top: 40px; }\n\n@keyframes pulse {\n  from {\n    background: rgba(0, 0, 0, 0.95); }\n  to {\n    background: rgba(0, 0, 0, 0.8); } }\n\n.overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: -100;\n  background: transparent;\n  transition: all 1s ease-in-out; }\n  .overlay.overlay__show {\n    opacity: 1;\n    z-index: 999;\n    background: rgba(0, 0, 0, 0.95);\n    animation: pulse 3s infinite ease-in-out alternate;\n    animation-delay: 1s; }\n", ""]);
 	
 	// exports
 

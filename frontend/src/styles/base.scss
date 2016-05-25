@@ -39,10 +39,10 @@ body {
 
 @keyframes pulse {
   from {
-    background: rgba(0,0,0,.9);
+    background: rgba(0,0,0,.95);
   }
   to {
-    background: rgba(0,0,0,.7);
+    background: rgba(0,0,0,.8);
   }
 }
 
@@ -59,7 +59,7 @@ body {
   &.overlay__show {
     opacity: 1;
     z-index: 999;
-    background: rgba(0,0,0,.9);
+    background: rgba(0,0,0,.95);
     animation: pulse 3s infinite ease-in-out alternate;
     animation-delay: 1s;
   }

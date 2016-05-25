@@ -19,7 +19,7 @@ function i3exec (command) {
 }
 
 function i3playVideo (path) {
-  const command = `omxplayer ${path} && ${i3ws(1)}`
+  const command = `xterm -fullscreen -fg black -bg black -e omxplayer -o hdmi -r ${path}; ${i3ws(1)}`
   return `${i3ws(2)} && ${i3exec(command)}`
 }
 
