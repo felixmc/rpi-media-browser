@@ -29421,28 +29421,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      _mousetrap2.default.bind(['space'], this.focusItems.bind(this));
-	      _mousetrap2.default.bind(['ctrl+space'], this.focusSearch.bind(this));
+	      _mousetrap2.default.bind(['ctrl+space']);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      _mousetrap2.default.unbind(['ctrl+space', 'space']);
-	    }
-	  }, {
-	    key: 'focusSearch',
-	    value: function focusSearch() {
-	      this.refs.filter.refs.search.focus();
+	      _mousetrap2.default.unbind(['ctrl+space']);
 	    }
 	  }, {
 	    key: 'playMedia',
 	    value: function playMedia(item) {
 	      var _this2 = this;
 	
-	      this.setState({ isPlaying: true });
-	      setTimeout(function () {
-	        _this2.props.playMedia(item);
-	      }, 1000);
+	      if (!this.state.isPlaying) {
+	        this.setState({ isPlaying: true });
+	        setTimeout(function () {
+	          _this2.props.playMedia(item);
+	        }, 1000);
+	      }
+	    }
+	  }, {
+	    key: 'handleKeyDown',
+	    value: function handleKeyDown(e) {
+	      if (this.state.isPlaying) {
+	        this.setState({ isPlaying: false });
+	
+	        e.preventDefault();
+	        return false;
+	      }
+	    }
+	  }, {
+	    key: 'focusSearch',
+	    value: function focusSearch() {
+	      this.refs.filter.refs.search.focus();
 	    }
 	  }, {
 	    key: 'focusItems',
@@ -29467,7 +29478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { onKeyDown: this.handleKeyDown.bind(this) },
 	        _react2.default.createElement('div', { className: overlayClasses }),
 	        _react2.default.createElement(_ItemsFilter2.default, {
 	          ref: 'filter',

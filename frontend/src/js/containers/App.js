@@ -28,23 +28,33 @@ class App extends Component {
   }
 
   componentDidMount () {
-    Mousetrap.bind(['space'], this.focusItems.bind(this))
-    Mousetrap.bind(['ctrl+space'], this.focusSearch.bind(this))
+    Mousetrap.bind(['ctrl+space'])
   }
 
   componentWillUnmount () {
-    Mousetrap.unbind(['ctrl+space', 'space'])
+    Mousetrap.unbind(['ctrl+space'])
+  }
+
+  playMedia (item) {
+    if (!this.state.isPlaying) {
+      this.setState({ isPlaying: true })
+      setTimeout(() => {
+        this.props.playMedia(item)
+      }, 1000)
+    }
+  }
+
+  handleKeyDown (e) {
+    if (this.state.isPlaying) {
+      this.setState({ isPlaying: false })
+
+      e.preventDefault()
+      return false
+    }
   }
 
   focusSearch () {
     this.refs.filter.refs.search.focus()
-  }
-
-  playMedia (item) {
-    this.setState({ isPlaying: true })
-    setTimeout(() => {
-      this.props.playMedia(item)
-    }, 1000)
   }
 
   focusItems () {
@@ -61,7 +71,7 @@ class App extends Component {
     })
 
     return (
-      <div>
+      <div onKeyDown={this.handleKeyDown.bind(this)}>
         <div className={overlayClasses}></div>
         <ItemsFilter
           ref='filter'
