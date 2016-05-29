@@ -20880,6 +20880,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.playMedia = playMedia;
 	var exec = global.require('child_process').exec;
 	
+	var debug = Debug('video');
+	
 	function i3msg(msg) {
 	  return 'i3-msg ' + msg;
 	}
@@ -20899,7 +20901,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	function playMedia(media) {
-	  exec(i3playVideo(media));
+	  debug('playing video:', media);
+	  exec(i3playVideo(media), {}, function (err) {
+	    if (err) {
+	      debug('error:', err);
+	    }
+	  });
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 

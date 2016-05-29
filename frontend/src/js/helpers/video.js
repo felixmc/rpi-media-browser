@@ -1,5 +1,7 @@
 const exec = global.require('child_process').exec
 
+const debug = Debug('video')
+
 function i3msg (msg) {
   return `i3-msg ${msg}`
 }
@@ -19,5 +21,10 @@ function i3playVideo (path) {
 }
 
 export function playMedia (media) {
-  exec(i3playVideo(media))
+  debug('playing video:', media)
+  exec(i3playVideo(media), {}, (err) => {
+    if (err) {
+      debug('error:', err)
+    }
+  })
 }
