@@ -22,7 +22,9 @@ function i3playVideo (path) {
 
 export function playMedia (media) {
   debug('playing video:', media)
-  exec(i3playVideo(media), {}, (err) => {
+  exec(i3playVideo(media), {
+    cwd: global.__dirname,
+  }, (err) => {
     if (err) {
       debug('error:', err)
     }

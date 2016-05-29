@@ -67,7 +67,7 @@ export default class MediaList extends React.Component {
           key={item.hashCode() + i}
           ref={`item-${i}`}
           item={item}
-          handlePlay={() => this.props.handlePlay(item.getIn['mediaFiles', 0])}
+          handlePlay={() => this.props.handlePlay(item.getIn(['mediaFiles', 0]))}
           handleFocus={() => this.setState({ focusIndex: i })}
         />
       )

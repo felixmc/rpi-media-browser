@@ -20902,7 +20902,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function playMedia(media) {
 	  debug('playing video:', media);
-	  exec(i3playVideo(media), {}, function (err) {
+	  exec(i3playVideo(media), {
+	    cwd: global.__dirname
+	  }, function (err) {
 	    if (err) {
 	      debug('error:', err);
 	    }
@@ -20925,15 +20927,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function init(prefix) {
-	  var enable = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	_debug2.default.enable('*');
 	
+	function init(prefix) {
 	  prefix = prefix + ':';
 	  var debug = (0, _debug2.default)(prefix).bind(null, '');
-	
-	  if (enable) {
-	    _debug2.default.enable(prefix + '*');
-	  }
 	
 	  debug.disable = _debug2.default.disable.bind(null, prefix + '*');
 	
@@ -53686,7 +53684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ref: 'item-' + i,
 	          item: item,
 	          handlePlay: function handlePlay() {
-	            return _this2.props.handlePlay(item.getIn[('mediaFiles', 0)]);
+	            return _this2.props.handlePlay(item.getIn(['mediaFiles', 0]));
 	          },
 	          handleFocus: function handleFocus() {
 	            return _this2.setState({ focusIndex: i });
