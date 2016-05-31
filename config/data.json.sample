@@ -1,4 +1,5 @@
 {
     "media_dir": "./sample/media/",
-    "imports_dir": "./sample/imports/"
+    "imports_dir": "./sample/imports/",
+    "tmp_dir": "./sample/tmp/"
 }

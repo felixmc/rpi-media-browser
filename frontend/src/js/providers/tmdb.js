@@ -29,6 +29,10 @@ function processItem (item) {
   item.year = item.release_date.split('-')[0]
   item.vote_average = Math.round(item.vote_average * 5) / 10
 
+  item.categories = item.genre_ids.map(id => {
+    return tmdb.genres.find(genre => genre.id === id).name
+  })
+
   return item
 }
 

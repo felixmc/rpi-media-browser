@@ -18,7 +18,7 @@ export function tmdbToMedia (result) {
   const media = {
     imdb_id: result.get('id'),
     title: result.get('title'),
-    categories: result.get('genre_ids'),
+    categories: result.get('categories'),
     description: result.get('overview'),
     year: result.get('year'),
     rating: result.get('vote_average'),

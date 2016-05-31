@@ -13,7 +13,6 @@ export const parseMediaData = (file) => {
         jsonData.backdropImage = jsonData.backdropImage.startsWith('http') ? jsonData.backdropImage : mediaDir + jsonData.backdropImage
         jsonData.coverImage = jsonData.coverImage.startsWith('http') ? jsonData.coverImage : mediaDir + jsonData.coverImage
         jsonData.mediaFiles = jsonData.mediaFiles.map(file => mediaDir + file)
-        jsonData.categories = jsonData.categories.map(cat => cat.toString())
         resolve(jsonData)
       }
     })

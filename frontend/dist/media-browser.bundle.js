@@ -23347,7 +23347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Browser2 = _interopRequireDefault(_Browser);
 	
-	var _Importer = __webpack_require__(/*! ./Importer */ 407);
+	var _Importer = __webpack_require__(/*! ./Importer */ 408);
 	
 	var _Importer2 = _interopRequireDefault(_Importer);
 	
@@ -24511,7 +24511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _actions2 = _interopRequireDefault(_actions);
 	
-	__webpack_require__(/*! styles/browser.scss */ 405);
+	__webpack_require__(/*! styles/browser.scss */ 406);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -46551,7 +46551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var ImportsProvider = _interopRequireWildcard(_imports);
 	
-	var _tmdb = __webpack_require__(/*! ../providers/tmdb */ 404);
+	var _tmdb = __webpack_require__(/*! ../providers/tmdb */ 405);
 	
 	var MovieProvider = _interopRequireWildcard(_tmdb);
 	
@@ -47803,9 +47803,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        jsonData.mediaFiles = jsonData.mediaFiles.map(function (file) {
 	          return mediaDir + file;
 	        });
-	        jsonData.categories = jsonData.categories.map(function (cat) {
-	          return cat.toString();
-	        });
 	        resolve(jsonData);
 	      }
 	    });
@@ -47861,7 +47858,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _config = __webpack_require__(/*! ./config */ 402);
 	
-	var _imports = __webpack_require__(/*! ../helpers/imports */ 430);
+	var _imports = __webpack_require__(/*! ../helpers/imports */ 404);
 	
 	var helper = _interopRequireWildcard(_imports);
 	
@@ -47917,7 +47914,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function processImport(importFile, mediaData) {
 	  var title = helper.parseTitle(mediaData.title).replace(/ /g, '-');
-	  console.log('title:', mediaData.title, title);
 	  var mediaFile = title + '-' + mediaData.year + '-' + mediaData.imdb_id + '.media';
 	  var tempPath = _config.data.tmp_dir + Date.now() + '-' + mediaFile + '/';
 	  var mediaPath = _config.data.media_dir + mediaFile + '/';
@@ -47932,7 +47928,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // download cover image
 	    function (cb) {
 	      var coverFile = fs.createWriteStream(tempPath + 'cover.jpg');
-	      console.log('requesting..', mediaData.coverImage);
 	      http.get(mediaData.coverImage, function (res) {
 	        res.pipe(coverFile);
 	        mediaData.coverImage = 'cover.jpg';
@@ -47945,7 +47940,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // download backdrop image
 	    function (cb) {
 	      var backdropFile = fs.createWriteStream(tempPath + 'backdrop.jpg');
-	      console.log('requesting..', mediaData.backdropImage);
 	      http.get(mediaData.backdropImage, function (res) {
 	        res.pipe(backdropFile);
 	        mediaData.backdropImage = 'backdrop.jpg';
@@ -47979,6 +47973,57 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 404 */
+/*!********************************************!*\
+  !*** ./frontend/src/js/helpers/imports.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.parseFileName = parseFileName;
+	exports.parseTitle = parseTitle;
+	exports.tmdbToMedia = tmdbToMedia;
+	function parseFileName() {
+	  var filename = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	
+	  // remove extension
+	  var name = filename.substr(0, filename.lastIndexOf('.'));
+	  return parseTitle(name);
+	}
+	
+	function parseTitle() {
+	  var title = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	
+	  // remove non-word characters
+	  title = title.replace(/\W/g, ' ');
+	
+	  // replace multiple spaces
+	  title = title.replace(/\s{2,}/g, ' ');
+	
+	  return title.trim();
+	}
+	
+	function tmdbToMedia(result) {
+	  var media = {
+	    imdb_id: result.get('id'),
+	    title: result.get('title'),
+	    categories: result.get('categories'),
+	    description: result.get('overview'),
+	    year: result.get('year'),
+	    rating: result.get('vote_average'),
+	    backdropImage: result.get('backdrop_path'),
+	    coverImage: result.get('poster_path'),
+	    mediaFiles: []
+	  };
+	
+	  return media;
+	}
+
+/***/ },
+/* 405 */
 /*!*******************************************!*\
   !*** ./frontend/src/js/providers/tmdb.js ***!
   \*******************************************/
@@ -48026,6 +48071,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  item.year = item.release_date.split('-')[0];
 	  item.vote_average = Math.round(item.vote_average * 5) / 10;
 	
+	  item.categories = item.genre_ids.map(function (id) {
+	    return _config.tmdb.genres.find(function (genre) {
+	      return genre.id === id;
+	    }).name;
+	  });
+	
 	  return item;
 	}
 	
@@ -48060,7 +48111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 405 */
+/* 406 */
 /*!******************************************!*\
   !*** ./frontend/src/styles/browser.scss ***!
   \******************************************/
@@ -48069,7 +48120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/sass-loader!./browser.scss */ 406);
+	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/sass-loader!./browser.scss */ 407);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(/*! ./../../../~/style-loader/addStyles.js */ 377)(content, {});
@@ -48089,7 +48140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 406 */
+/* 407 */
 /*!*************************************************************************!*\
   !*** ./~/css-loader!./~/sass-loader!./frontend/src/styles/browser.scss ***!
   \*************************************************************************/
@@ -48106,7 +48157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 407 */
+/* 408 */
 /*!************************************************!*\
   !*** ./frontend/src/js/containers/Importer.js ***!
   \************************************************/
@@ -48128,7 +48179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 175);
 	
-	var _immutable = __webpack_require__(/*! immutable */ 408);
+	var _immutable = __webpack_require__(/*! immutable */ 409);
 	
 	var _classnames = __webpack_require__(/*! classnames */ 204);
 	
@@ -48138,7 +48189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _mousetrap2 = _interopRequireDefault(_mousetrap);
 	
-	var _ImportModal = __webpack_require__(/*! ../components/ImportModal */ 409);
+	var _ImportModal = __webpack_require__(/*! ../components/ImportModal */ 410);
 	
 	var _ImportModal2 = _interopRequireDefault(_ImportModal);
 	
@@ -48146,7 +48197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _ImportItem2 = _interopRequireDefault(_ImportItem);
 	
-	var _imports = __webpack_require__(/*! ../helpers/imports */ 430);
+	var _imports = __webpack_require__(/*! ../helpers/imports */ 404);
 	
 	var importsHelper = _interopRequireWildcard(_imports);
 	
@@ -48365,7 +48416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(Importer);
 
 /***/ },
-/* 408 */
+/* 409 */
 /*!***************************************!*\
   !*** ./~/immutable/dist/immutable.js ***!
   \***************************************/
@@ -53352,7 +53403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}));
 
 /***/ },
-/* 409 */
+/* 410 */
 /*!***************************************************!*\
   !*** ./frontend/src/js/components/ImportModal.js ***!
   \***************************************************/
@@ -53374,7 +53425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _reactModal = __webpack_require__(/*! react-modal */ 410);
+	var _reactModal = __webpack_require__(/*! react-modal */ 411);
 	
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 	
@@ -53382,7 +53433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _mousetrap2 = _interopRequireDefault(_mousetrap);
 	
-	var _imports = __webpack_require__(/*! ../helpers/imports */ 430);
+	var _imports = __webpack_require__(/*! ../helpers/imports */ 404);
 	
 	var importsHelper = _interopRequireWildcard(_imports);
 	
@@ -53597,18 +53648,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ImportModal;
 
 /***/ },
-/* 410 */
+/* 411 */
 /*!************************************!*\
   !*** ./~/react-modal/lib/index.js ***!
   \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./components/Modal */ 411);
+	module.exports = __webpack_require__(/*! ./components/Modal */ 412);
 	
 
 
 /***/ },
-/* 411 */
+/* 412 */
 /*!***********************************************!*\
   !*** ./~/react-modal/lib/components/Modal.js ***!
   \***********************************************/
@@ -53616,12 +53667,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(/*! react */ 2);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 39);
-	var ExecutionEnvironment = __webpack_require__(/*! exenv */ 412);
-	var ModalPortal = React.createFactory(__webpack_require__(/*! ./ModalPortal */ 413));
-	var ariaAppHider = __webpack_require__(/*! ../helpers/ariaAppHider */ 428);
-	var elementClass = __webpack_require__(/*! element-class */ 429);
+	var ExecutionEnvironment = __webpack_require__(/*! exenv */ 413);
+	var ModalPortal = React.createFactory(__webpack_require__(/*! ./ModalPortal */ 414));
+	var ariaAppHider = __webpack_require__(/*! ../helpers/ariaAppHider */ 429);
+	var elementClass = __webpack_require__(/*! element-class */ 430);
 	var renderSubtreeIntoContainer = __webpack_require__(/*! react-dom */ 39).unstable_renderSubtreeIntoContainer;
-	var Assign = __webpack_require__(/*! lodash.assign */ 417);
+	var Assign = __webpack_require__(/*! lodash.assign */ 418);
 	
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
 	var AppElement = ExecutionEnvironment.canUseDOM ? document.body : {appendChild: function() {}};
@@ -53729,7 +53780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 4)))
 
 /***/ },
-/* 412 */
+/* 413 */
 /*!****************************************!*\
   !*** ./~/react-modal/~/exenv/index.js ***!
   \****************************************/
@@ -53777,7 +53828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 413 */
+/* 414 */
 /*!*****************************************************!*\
   !*** ./~/react-modal/lib/components/ModalPortal.js ***!
   \*****************************************************/
@@ -53785,9 +53836,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = __webpack_require__(/*! react */ 2);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(/*! ../helpers/focusManager */ 414);
-	var scopeTab = __webpack_require__(/*! ../helpers/scopeTab */ 416);
-	var Assign = __webpack_require__(/*! lodash.assign */ 417);
+	var focusManager = __webpack_require__(/*! ../helpers/focusManager */ 415);
+	var scopeTab = __webpack_require__(/*! ../helpers/scopeTab */ 417);
+	var Assign = __webpack_require__(/*! lodash.assign */ 418);
 	
 	// so that our CSS is statically analyzable
 	var CLASS_NAMES = {
@@ -53972,13 +54023,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 414 */
+/* 415 */
 /*!***************************************************!*\
   !*** ./~/react-modal/lib/helpers/focusManager.js ***!
   \***************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(/*! ../helpers/tabbable */ 415);
+	var findTabbable = __webpack_require__(/*! ../helpers/tabbable */ 416);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -54049,7 +54100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 415 */
+/* 416 */
 /*!***********************************************!*\
   !*** ./~/react-modal/lib/helpers/tabbable.js ***!
   \***********************************************/
@@ -54108,13 +54159,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 416 */
+/* 417 */
 /*!***********************************************!*\
   !*** ./~/react-modal/lib/helpers/scopeTab.js ***!
   \***********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(/*! ../helpers/tabbable */ 415);
+	var findTabbable = __webpack_require__(/*! ../helpers/tabbable */ 416);
 	
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -54136,7 +54187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 417 */
+/* 418 */
 /*!************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/index.js ***!
   \************************************************/
@@ -54150,9 +54201,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(/*! lodash._baseassign */ 418),
-	    createAssigner = __webpack_require__(/*! lodash._createassigner */ 424),
-	    keys = __webpack_require__(/*! lodash.keys */ 420);
+	var baseAssign = __webpack_require__(/*! lodash._baseassign */ 419),
+	    createAssigner = __webpack_require__(/*! lodash._createassigner */ 425),
+	    keys = __webpack_require__(/*! lodash.keys */ 421);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -54225,7 +54276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 418 */
+/* 419 */
 /*!*********************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._baseassign/index.js ***!
   \*********************************************************************/
@@ -54239,8 +54290,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(/*! lodash._basecopy */ 419),
-	    keys = __webpack_require__(/*! lodash.keys */ 420);
+	var baseCopy = __webpack_require__(/*! lodash._basecopy */ 420),
+	    keys = __webpack_require__(/*! lodash.keys */ 421);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -54261,7 +54312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 419 */
+/* 420 */
 /*!****************************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._baseassign/~/lodash._basecopy/index.js ***!
   \****************************************************************************************/
@@ -54302,7 +54353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 420 */
+/* 421 */
 /*!**************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash.keys/index.js ***!
   \**************************************************************/
@@ -54316,9 +54367,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(/*! lodash._getnative */ 421),
-	    isArguments = __webpack_require__(/*! lodash.isarguments */ 422),
-	    isArray = __webpack_require__(/*! lodash.isarray */ 423);
+	var getNative = __webpack_require__(/*! lodash._getnative */ 422),
+	    isArguments = __webpack_require__(/*! lodash.isarguments */ 423),
+	    isArray = __webpack_require__(/*! lodash.isarray */ 424);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -54547,7 +54598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 421 */
+/* 422 */
 /*!**********************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash.keys/~/lodash._getnative/index.js ***!
   \**********************************************************************************/
@@ -54693,7 +54744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 422 */
+/* 423 */
 /*!***********************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash.keys/~/lodash.isarguments/index.js ***!
   \***********************************************************************************/
@@ -54945,7 +54996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 423 */
+/* 424 */
 /*!*******************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash.keys/~/lodash.isarray/index.js ***!
   \*******************************************************************************/
@@ -55134,7 +55185,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 424 */
+/* 425 */
 /*!*************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._createassigner/index.js ***!
   \*************************************************************************/
@@ -55148,9 +55199,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(/*! lodash._bindcallback */ 425),
-	    isIterateeCall = __webpack_require__(/*! lodash._isiterateecall */ 426),
-	    restParam = __webpack_require__(/*! lodash.restparam */ 427);
+	var bindCallback = __webpack_require__(/*! lodash._bindcallback */ 426),
+	    isIterateeCall = __webpack_require__(/*! lodash._isiterateecall */ 427),
+	    restParam = __webpack_require__(/*! lodash.restparam */ 428);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -55195,7 +55246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 425 */
+/* 426 */
 /*!************************************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._createassigner/~/lodash._bindcallback/index.js ***!
   \************************************************************************************************/
@@ -55269,7 +55320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 426 */
+/* 427 */
 /*!**************************************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._createassigner/~/lodash._isiterateecall/index.js ***!
   \**************************************************************************************************/
@@ -55410,7 +55461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 427 */
+/* 428 */
 /*!********************************************************************************************!*\
   !*** ./~/react-modal/~/lodash.assign/~/lodash._createassigner/~/lodash.restparam/index.js ***!
   \********************************************************************************************/
@@ -55486,7 +55537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 428 */
+/* 429 */
 /*!***************************************************!*\
   !*** ./~/react-modal/lib/helpers/ariaAppHider.js ***!
   \***************************************************/
@@ -55537,7 +55588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 429 */
+/* 430 */
 /*!************************************************!*\
   !*** ./~/react-modal/~/element-class/index.js ***!
   \************************************************/
@@ -55603,57 +55654,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  else this.add(className)
 	}
 
-
-/***/ },
-/* 430 */
-/*!********************************************!*\
-  !*** ./frontend/src/js/helpers/imports.js ***!
-  \********************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.parseFileName = parseFileName;
-	exports.parseTitle = parseTitle;
-	exports.tmdbToMedia = tmdbToMedia;
-	function parseFileName() {
-	  var filename = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-	
-	  // remove extension
-	  var name = filename.substr(0, filename.lastIndexOf('.'));
-	  return parseTitle(name);
-	}
-	
-	function parseTitle() {
-	  var title = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-	
-	  // remove non-word characters
-	  title = title.replace(/\W/g, ' ');
-	
-	  // replace multiple spaces
-	  title = title.replace(/\s{2,}/g, ' ');
-	
-	  return title.trim();
-	}
-	
-	function tmdbToMedia(result) {
-	  var media = {
-	    imdb_id: result.get('id'),
-	    title: result.get('title'),
-	    categories: result.get('genre_ids'),
-	    description: result.get('overview'),
-	    year: result.get('year'),
-	    rating: result.get('vote_average'),
-	    backdropImage: result.get('backdrop_path'),
-	    coverImage: result.get('poster_path'),
-	    mediaFiles: []
-	  };
-	
-	  return media;
-	}
 
 /***/ },
 /* 431 */
@@ -57007,7 +57007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _reduxActions = __webpack_require__(/*! redux-actions */ 389);
 	
-	var _immutable = __webpack_require__(/*! immutable */ 408);
+	var _immutable = __webpack_require__(/*! immutable */ 409);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
 	
@@ -57126,7 +57126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _utilities = __webpack_require__(/*! ./utilities */ 456);
 	
-	var _immutable = __webpack_require__(/*! immutable */ 408);
+	var _immutable = __webpack_require__(/*! immutable */ 409);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
 	
@@ -57252,7 +57252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	
-	var _immutable = __webpack_require__(/*! immutable */ 408);
+	var _immutable = __webpack_require__(/*! immutable */ 409);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
 	

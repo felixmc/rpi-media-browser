@@ -54,8 +54,7 @@ export function loadImports () {
 }
 
 export function processImport (importFile, mediaData) {
-  const title =  helper.parseTitle(mediaData.title).replace(/ /g, '-')
-  console.log('title:', mediaData.title, title)
+  const title = helper.parseTitle(mediaData.title).replace(/ /g, '-')
   const mediaFile = title + '-' + mediaData.year + '-' + mediaData.imdb_id + '.media'
   const tempPath = dataConfig.tmp_dir + Date.now() + '-' + mediaFile + '/'
   const mediaPath = dataConfig.media_dir + mediaFile + '/'
@@ -68,7 +67,6 @@ export function processImport (importFile, mediaData) {
       // download cover image
       (cb) => {
         const coverFile = fs.createWriteStream(tempPath + 'cover.jpg')
-        console.log('requesting..', mediaData.coverImage)
         http.get(mediaData.coverImage, (res) => {
           res.pipe(coverFile)
           mediaData.coverImage = 'cover.jpg'
@@ -79,7 +77,6 @@ export function processImport (importFile, mediaData) {
       // download backdrop image
       (cb) => {
         const backdropFile = fs.createWriteStream(tempPath + 'backdrop.jpg')
-        console.log('requesting..', mediaData.backdropImage)
         http.get(mediaData.backdropImage, (res) => {
           res.pipe(backdropFile)
           mediaData.backdropImage = 'backdrop.jpg'

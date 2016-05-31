@@ -28,7 +28,7 @@ export default combineReducers({
       }
 
       return state
-    }
+    },
   }, List()),
 
   importStatus: handleActions({
