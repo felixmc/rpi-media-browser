@@ -1,0 +1,96 @@
+.import-modal {
+  width: 500px;
+  height: 90px;
+  background: #222;
+  margin: 150px auto 0;
+  padding: 100px 30px 0;
+  border-radius: 8px;
+  position: relative;
+  outline: none;
+  box-shadow: 0 7px 30px 5px rgba(0, 0, 0, 0.6);
+  border: 1px solid #111;
+
+  &.import-modal__expanded {
+    height: 540px;
+  }
+
+  &.import-modal__loading {
+    background: #222 url(../images/loading.gif) no-repeat center 60px;
+  }
+
+  .import-modal__header {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 50px;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    font-size: 0.7em;
+    padding-top: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    background: linear-gradient(#222, #111);
+    color: #ddd;
+
+    h2 {
+      margin: 0;
+      margin-left: 10px;
+    }
+  }
+
+  .import-modal__search {
+    background: #151515;
+    border-radius: 20px;
+    height: 40px;
+    box-shadow: inset 0 3px 15px 2px rgba(0,0,0,.7), 0 1px 0 0 rgba(255,255,255,.15);
+    color: #eee;
+    border: 1px solid #000;
+
+    input {
+      background: none;
+      width: 100%;
+      height: 100%;
+      font-size: .8em;
+      text-indent: 18px;
+      border: none;
+      color: #aaa;
+      border-radius: 20px;
+    }
+  }
+}
+
+.import-modal__results {
+  margin-top: 40px;
+  height: 420px;
+  overflow-y: scroll;
+  padding: 5px;
+}
+
+.import-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.4);
+  transition: .4s opacity;
+  animation: fadeIn .4s;
+
+  &.ReactModal__Overlay--after-open {
+    opacity: 1;
+  }
+
+  &.ReactModal__Overlay--before-close {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

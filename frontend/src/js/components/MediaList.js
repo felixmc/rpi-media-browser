@@ -28,14 +28,23 @@ export default class MediaList extends React.Component {
   componentDidMount () {
     Mousetrap.bind(['left'], this.focusPrevItem)
     Mousetrap.bind(['right'], this.focusNextItem)
+    this.focusFirstItem()
   }
 
   componentWillUnmount () {
     Mousetrap.unbind(['left', 'right'])
   }
 
+  componentDidUpdate (prevProps) {
+    if (!prevProps.items.size) {
+      this.focusFirstItem()
+    }
+  }
+
   focusFirstItem () {
-    this.refs['item-0'].refs.cover.focus()
+    if (this.props.items.size) {
+      this.refs['item-0'].refs.cover.focus()
+    }
   }
 
   focusNextItem () {

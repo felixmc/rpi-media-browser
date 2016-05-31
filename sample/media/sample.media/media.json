@@ -3,7 +3,9 @@
     "title": "Sample Media",
     "categories": ["comedy", "drama"],
     "description": "A sample media file",
+    "year": 2015,
     "rating": 4.2,
+    "backdropImage": "cover.png",
     "coverImage": "cover.png",
     "mediaFiles": ["sample.mp4"]
 }

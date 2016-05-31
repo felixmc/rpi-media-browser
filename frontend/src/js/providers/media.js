@@ -10,8 +10,10 @@ export const parseMediaData = (file) => {
       if (err) reject(err)
       else {
         const jsonData = JSON.parse(data)
-        jsonData.coverImage = mediaDir + jsonData.coverImage
+        jsonData.backdropImage = jsonData.backdropImage.startsWith('http') ? jsonData.backdropImage : mediaDir + jsonData.backdropImage
+        jsonData.coverImage = jsonData.coverImage.startsWith('http') ? jsonData.coverImage : mediaDir + jsonData.coverImage
         jsonData.mediaFiles = jsonData.mediaFiles.map(file => mediaDir + file)
+        jsonData.categories = jsonData.categories.map(cat => cat.toString())
         resolve(jsonData)
       }
     })

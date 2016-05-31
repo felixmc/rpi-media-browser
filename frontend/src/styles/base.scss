@@ -6,12 +6,20 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTRampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 //$bg-color-light: #293841;
 $bg-color-light: #364D5A;
 $bg-color-dark:  #161D24;
 
 * { 
-  outline-color: #D4FF00;
+  outline-color: #00FFC4;// #D4FF00;
   outline-width: 8px;
 }
 
@@ -24,8 +32,9 @@ body {
 
 body {
   background: linear-gradient(45deg, $bg-color-dark, $bg-color-light);
+  background: linear-gradient(45deg, #050F19, #1D4B5B);
   color: #eee;
-  font-family: 'Open Sans Condensed', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 20px;
   z-index: 0;
 }

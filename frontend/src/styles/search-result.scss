@@ -1,0 +1,41 @@
+.search-result {
+  background-size: cover;
+  height: 120px;
+  padding: 5px 15px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 0 #000;
+  background-color: #555;
+  color: #ddd;
+  position: relative;
+  border-radius: 7px;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,.8));
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 7px;
+  }
+}
+
+.search-result__title {
+  font-size: 1.3em;
+  margin: 0;
+  position: relative;
+}
+
+.search-result__year {
+  opacity: .6;
+}
+
+.search-result__description {
+  font-size: 0.75em;
+  position: relative;
+  max-height: 60px;
+  overflow: hidden;
+}

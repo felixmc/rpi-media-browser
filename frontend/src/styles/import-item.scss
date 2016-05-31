@@ -1,0 +1,29 @@
+.import-item {
+  padding: 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  font-size: .9em;
+  border-radius: 7px;
+  transition: all .2s ease-in-out;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &:focus {
+    transform: scale(1.05);
+    box-shadow: 0 10px 50px 5px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .import-item__filename {
+    color: #ddd;
+    margin: 0;
+  }
+
+  .import-item__size {
+    margin-left: 20px;
+    opacity: .5;
+    float: right;
+    font-size: .8em;
+  }
+}

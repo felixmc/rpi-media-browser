@@ -1,0 +1,26 @@
+.import-item-container {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  transition: .4s all;
+
+  h2 {
+    text-align: center;
+  }
+
+  &.import-item-container__faded {
+    -webkit-filter: blur(6px);
+  }
+}
+
+.import-item-list {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 7px;
+  box-shadow: 0 10px 50px 5px rgba(0, 0, 0, 0.7);
+  border: 2px solid #111;
+
+  &>p {
+    text-indent: 30px;
+  }
+}
+

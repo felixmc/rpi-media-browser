@@ -8,9 +8,9 @@ import Mousetrap from 'mousetrap'
 import ItemsFilter from '../components/ItemsFilter'
 import MediaList from '../components/MediaList'
 import actions from '../actions'
-import 'styles/base.scss'
+import 'styles/browser.scss'
 
-class App extends Component {
+class Browser extends Component {
   static get propTypes () {
     return {
       state: object.isRequired,
@@ -36,11 +36,10 @@ class App extends Component {
 
   componentDidMount () {
     Mousetrap.bind(['ctrl+space'], this.focusSearch.bind(this))
-    // Mousetrap.bind(['ctrl-i'], this.importMedia.bind(this))
   }
 
   componentWillUnmount () {
-    Mousetrap.unbind(['ctrl+space', 'ctrl-i'])
+    Mousetrap.unbind(['ctrl+space'])
   }
 
   handleKeyDown (e) {
@@ -102,4 +101,4 @@ class App extends Component {
 export default connect(
   (state) => ({ state }),
   (dispatch) => ({ actions: bindActionCreators(actions, dispatch) })
-)(App)
+)(Browser)

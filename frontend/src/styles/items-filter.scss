@@ -4,13 +4,13 @@ $filter-height: 50px;
 .items-filter {
   background: rgba(255,255,255,.6);
   border-radius: $border-radius;
-  width: 50%;
+  width: 600px;
   margin: 0 auto;
   height: $filter-height;
   display: flex;
   flex-flow: row wrap;
   background: rgba(193,246,255,0.2);
-  box-shadow: 0 5px 30px 2px rgba(0,0,0,0.4);
+  box-shadow: 0 7px 50px 5px rgba(0, 0, 0, 0.7);
 
   .items-filter__search {
     height: 100%;
